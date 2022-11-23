@@ -4,9 +4,11 @@ const cors = require('cors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const mongoose = require('mongoose');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
 
 const app = express();
 
@@ -35,8 +37,22 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+// Routers
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/auth', authRouter);
+
+// Connect MongoDB
+const OMongooseOption = { useNewUrlParser: true, useUnifiedTopology: true };
+mongoose.connect(process.env.MONGO_URI, OMongooseOption).then(
+    () => { console.log("[Mongoose] Connection Complete!") },
+    (err) => { console.log(`[Mongoose] Connection Error: ${ err }`) }
+);
+
+// GET status
+app.get('/status', (req, res) => {
+  res.status(200).json({ isOnline: true });
+})
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
