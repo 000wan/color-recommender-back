@@ -11,7 +11,7 @@ const login = ( req, res, user ) => {
     return res.cookie("x_auth", user.token)
     .status(200).json({
       loginSuccess: true,
-      message: `Hi, ${ user.username }!`
+      message: `Login Success: ${ user.username }`
     });
   });
 }
@@ -53,7 +53,7 @@ const signupHandler = async (req, res) => {
     else {
       return res.status(200).json({ 
         registerSuccess: true,
-        message: `Welcome ${ credential.username }!`
+        message: `Register Success: ${ credential.username }`
       });
     }
   });
@@ -84,13 +84,7 @@ const signinHandler = (req, res) => {
             message: 'Wrong password!'
           });
         } else { // Login Success
-          login(req, res, user);
-
-          /*
-          return res.status(200).json({
-            loginSuccess: true,
-            message: `Hi, ${ credential.username }!`
-          });*/
+          return login(req, res, user);
         }
       });
     } else {
@@ -99,6 +93,24 @@ const signinHandler = (req, res) => {
         message: "Username doesn't exists!"
       });
     }
+  });
+}
+
+const logoutHandler = (req, res) => {
+  // req have req.user due to authMiddleware
+  UserModel.findOneAndUpdate({ _id: req.user._id }, {
+    token: "" // delete token
+  }, (err, user) => {
+    if ( err ) {
+      return res.status(500).json({ 
+        logoutSuccess: false,
+        message: '[DB-Error] Logout Failed!'
+      });
+    }
+    return res.status(200).json({ 
+      logoutSuccess: true,
+      message: `Logout Success: ${ user.username }`
+    });
   });
 }
 
@@ -124,5 +136,6 @@ const findByUsername = (req, res) => {
 module.exports = {
   signupHandler,
   signinHandler,
+  logoutHandler,
   findByUsername
 }
