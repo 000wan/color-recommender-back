@@ -1,5 +1,4 @@
 const { UserModel } = require('../models/user');
-require("dotenv").config();
 
 const login = ( req, res, user ) => {
   user.generateToken((err, user) => {
