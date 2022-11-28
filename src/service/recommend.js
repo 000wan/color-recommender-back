@@ -30,8 +30,7 @@ const createRecommend = async ( logData, recommendSize ) => {
     });
     //console.log(res);
 
-    // centroid is currently in LAB space. convert to RGB hex
-    result = res.map((x) => rgbToHex(lab2rgb(x.centroid)));
+    result = res;
   });
 
   return result;
@@ -44,13 +43,16 @@ const recommendHandler = async (req, res) => {
   const recommendSize = 5; // cluster number of k-means
   const user = req.user;
 
+  // from cluster object to color hex
+  const clusterToColor = (data) => data.map((x) => rgbToHex(lab2rgb(x.centroid)));
+
   // If you want to test, first do:
   // db.users.findOneAndUpdate({username: 'USERNAME'}, {$set: { recommend: {data:[]}} })
   try {
     if ( user.recommend.data.length > 0 ) { // already has recommend data
       return res.status(200).json({ 
         success: true,
-        data: user.recommend.data
+        data: clusterToColor(user.recommend.data)
       });
     }
     if ( user.log.length < recommendSize ) { // not enough datas
@@ -75,9 +77,11 @@ const recommendHandler = async (req, res) => {
           data: []
         });
       }
+      // centroid is currently in LAB space. convert to RGB hex
+
       return res.status(200).json({ 
         success: true,
-        data: user.recommend.data
+        data: clusterToColor(user.recommend.data)
       });
     });
   } catch (e) {

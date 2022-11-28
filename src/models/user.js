@@ -3,6 +3,25 @@ const jwt=require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+const ClusterSchema = {
+  centroid: [ Number ], // vector
+  cluster: [[ Number ]], // array of vectors
+  clusterInd: [ Number ] // array of indicies
+}
+
+const RecommendSchema = {
+  type: {
+    data: [
+      ClusterSchema
+    ],
+    timestamp: Date
+  },
+  default: {
+    data: [],
+    timestamp: new Date()
+  }
+};
+
 const OSchemaDefinition = {
   username: {
     type: String
@@ -18,16 +37,7 @@ const OSchemaDefinition = {
     }],
     default: []
   },
-  recommend: {
-    type: {
-      data: [String],
-      timestamp: Date
-    },
-    default: {
-      data: [],
-      timestamp: new Date()
-    }
-  },
+  recommend: RecommendSchema,
   token: {
     type: String
   }
