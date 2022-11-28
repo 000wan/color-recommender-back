@@ -50,10 +50,12 @@ const recommendHandler = async (req, res) => {
   // db.users.findOneAndUpdate({username: 'USERNAME'}, {$set: { recommend: {data:[]}} })
   try {
     if ( user.recommend.data.length > 0 ) { // already has recommend data
-      return res.status(200).json({ 
-        success: true,
-        data: clusterToColor(user.recommend.data)
-      });
+      if ( parseInt((user.updatedAt - user.recommend.timestamp)/(1000)) < 60 ) { // less than 60 seconds
+        return res.status(200).json({ 
+          success: true,
+          data: clusterToColor(user.recommend.data)
+        });
+      }
     }
     if ( user.log.length < recommendSize ) { // not enough datas
       return res.status(200).json({ 
