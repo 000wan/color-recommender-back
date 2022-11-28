@@ -5,15 +5,24 @@ const { UserModel } = require('../models/user');
 const router = express.Router();
 
 router.get('/history', authMiddleware, (req, res) => {
-  return res.status(200).json({
-    isAuth: true,
-    log: req.user.log
-  });
+  try {
+    const length = parseInt(req.query.length);
+
+    return res.status(200).json({
+      isAuth: true,
+      log: req.user.log.slice(0, length)
+    });
+  } catch(e) {
+    return res.status(500).json({
+      isAuth: true,
+      log: []
+    });
+  }
 });
 
 router.post('/logAction', authMiddleware, (req, res) => {
-  const { index, color } = req.body;
-  const maxLogLength = 10;
+  const { index, color, length } = req.body;
+  const maxLogLength = 100; // important
   
   UserModel.findOneAndUpdate({ _id: req.user._id }, {
     $push: {
@@ -33,10 +42,17 @@ router.post('/logAction', authMiddleware, (req, res) => {
         logSuccess: false
       });
     }
-    return res.status(200).json({ 
-      logSuccess: true,
-      log: user.log
-    });
+    try {
+      return res.status(200).json({ 
+        logSuccess: true,
+        log: user.log.slice(0, length)
+      });
+    } catch(e) {
+      return res.status(500).json({ 
+        logSuccess: true,
+        log: []
+      });
+    }
   });
 });
 
