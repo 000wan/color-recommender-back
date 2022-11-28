@@ -18,6 +18,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.7.3",
     "morgan": "~1.9.1",
-    "pug": "2.0.0-beta11"
+    "node-kmeans": "^1.1.9",
+    "pug": "2.0.0-beta11",
+    "rgb-lab": "^1.0.0"
   }
 }

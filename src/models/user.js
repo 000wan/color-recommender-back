@@ -18,6 +18,16 @@ const OSchemaDefinition = {
     }],
     default: []
   },
+  recommend: {
+    type: {
+      data: [String],
+      timestamp: Date
+    },
+    default: {
+      data: [],
+      timestamp: new Date()
+    }
+  },
   token: {
     type: String
   }

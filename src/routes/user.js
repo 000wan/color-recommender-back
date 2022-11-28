@@ -4,8 +4,13 @@ const logHandler = require('../service/log');
 
 const router = express.Router();
 
-router.get('/history', authMiddleware, logHandler.getLog);
+// logger
+router.get('/history', authMiddleware, logHandler.getLogHandler);
+router.post('/action', authMiddleware, logHandler.addLogHandler);
 
-router.post('/logAction', authMiddleware, logHandler.addLog);
+// recommend
+const { recommendHandler } = require('../service/recommend');
+
+router.get('/recommend', authMiddleware, recommendHandler);
 
 module.exports = router;

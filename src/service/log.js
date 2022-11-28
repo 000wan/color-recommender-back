@@ -1,6 +1,6 @@
 const { UserModel } = require('../models/user');
 
-const getLog = (req, res) => {
+const getLogHandler = (req, res) => {
   try {
     const length = parseInt(req.query.length);
 
@@ -16,7 +16,7 @@ const getLog = (req, res) => {
   }
 }
 
-const addLog = (req, res) => {
+const addLogHandler = (req, res) => {
   const { index, color, length } = req.body;
   const maxLogLength = 100; // important
   
@@ -53,6 +53,6 @@ const addLog = (req, res) => {
 }
 
 module.exports = {
-  getLog,
-  addLog
+  getLogHandler,
+  addLogHandler
 }
