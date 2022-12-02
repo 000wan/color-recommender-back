@@ -16,6 +16,6 @@ router.get('/', authMiddleware, (req, res) => {
   });
 });
 
-router.get('/logout', authMiddleware, authHandler.logoutHandler);
+router.post('/logout', authMiddleware, authHandler.logoutHandler);
 
 module.exports = router;

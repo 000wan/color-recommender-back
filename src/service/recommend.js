@@ -30,7 +30,7 @@ const createRecommend = async ( logData, recommendSize ) => {
     });
     //console.log(res);
 
-    result = res;
+    result = res.filter((cls) => cls.clusterInd.length > 0); // remove empty clusters
   });
 
   return result;
