@@ -29,6 +29,10 @@ const OSchemaDefinition = {
   password: {
     type: String
   },
+  hideProfile: {
+    type: Boolean,
+    default: false
+  },
   log: {
     type: [{
       index: Number,
