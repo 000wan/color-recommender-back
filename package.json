@@ -4,7 +4,8 @@
   "description": "Backend for Color Recommender App",
   "private": true,
   "scripts": {
-    "start": "nodemon ./src/bin/www"
+    "start": "node ./src/bin/www",
+    "start:dev": "nodemon ./src/bin/www"
   },
   "author": "YoungWan Kweon",
   "dependencies": {
