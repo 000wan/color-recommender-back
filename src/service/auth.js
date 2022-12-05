@@ -10,6 +10,7 @@ const login = ( req, res, user ) => {
     return res.cookie("x_auth", user.token)
     .status(200).json({
       loginSuccess: true,
+      token: user.token,
       message: `Login Success: ${ user.username }`
     });
   });
