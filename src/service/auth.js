@@ -7,8 +7,9 @@ const login = ( req, res, user ) => {
     });
 
     // save token to cookie
-    return res.cookie("x_auth", user.token)
-    .status(200).json({
+    return res.cookie("x_auth", user.token, {
+      sameSite: 'none', secure: true // For Cross-Site cookies
+    }).status(200).json({
       loginSuccess: true,
       token: user.token,
       message: `Login Success: ${ user.username }`
@@ -107,7 +108,10 @@ const logoutHandler = (req, res) => {
         message: '[DB-Error] Logout Failed!'
       });
     }
-    return res.status(200).json({ 
+
+    return res.cookie("x_auth", user.token, {
+      sameSite: 'none', secure: true, maxAge: -1 // Delete cookie
+    }).status(200).json({ 
       logoutSuccess: true,
       message: `Logout Success: ${ user.username }`
     });
